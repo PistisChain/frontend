@@ -7,10 +7,12 @@ const TransactionsList = () => {
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [rewardAddress, setRewardAddress] = useState('');
+    const [feeAddress, setFeeAddress] = useState('');
 
-    const handleMine = async (transactionId) => {
+    const handleMine = async () => {
         try {
-            const response = await axios.post('http://localhost:3001/miner/mine', { transactionId });
+            const response = await axios.post('http://localhost:3001/miner/mine', {rewardAddress,feeAddress });
             console.log('Mining successful:', response.data);
             toast.success("Mining success")
             window.location.reload()
@@ -48,13 +50,40 @@ const TransactionsList = () => {
         <div>
             <Toaster position="top-center"/>
             <h1>Transactions Pools</h1>
+            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                <input
+                    type="text"
+                    placeholder="Reward Address"
+                    value={rewardAddress}
+                    onChange={(e) => setRewardAddress(e.target.value)}
+                    style={{ marginRight: '10px', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+                />
+                <input
+                    type="text"
+                    placeholder="Fee Address"
+                    value={feeAddress}
+                    onChange={(e) => setFeeAddress(e.target.value)}
+                    style={{ marginRight: '10px', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+                />
+                <button
+                    onClick={handleMine}
+                    style={{
+                        padding: '15px 25px',
+                        fontSize: '16px',
+                        borderRadius: '8px',
+                        color: 'black',
+                        cursor: 'pointer'
+                    }}
+                >
+                    Mine All
+                </button>
+            </div>
             <table>
                 <thead>
                 <tr>
                     <th>Transaction ID</th>
                     <th>Hash</th>
                     <th>Type</th>
-                    <th>Operate</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,9 +92,6 @@ const TransactionsList = () => {
                         <td>{transaction.id}</td>
                         <td>{transaction.hash}</td>
                         <td>{transaction.type}</td>
-                        <td>
-                            <button onClick={() => handleMine(transaction.id)}>Mine</button>
-                        </td>
                     </tr>
                 ))}
                 </tbody>
