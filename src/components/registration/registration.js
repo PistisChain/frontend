@@ -5,8 +5,6 @@ import './registration.css';
 function Registration() {
     const [studentID, setStudentID] = useState("");
     const [password, setpassword] = useState("");
-    const [pk, setPk] = useState("");
-    const [walletId, setWalletId] = useState(""); // 存储生成的 walletId
 
     const handleGenerate = async (e) => {
         e.preventDefault();
@@ -19,65 +17,67 @@ function Registration() {
         try {
             // 第一步: 请求 /operator/wallets 接口创建钱包并获取 walletId
             const walletResponse = await axios.post(
-                "http://localhost:3001/operator/wallets",
+                "http://localhost:2888/register",
                 {
+                    studentId: studentID,
                     password: password,
                 }
             );
+            console.log(walletResponse);
 
-            const walletId = walletResponse.data.id;
-            setWalletId(walletId); // 保存返回的 walletId
+        //     const walletId = walletResponse.data.id;
+        //     setWalletId(walletId); // 保存返回的 walletId
 
-            console.log("钱包创建成功，walletId:", walletId);
+        //     console.log("钱包创建成功，walletId:", walletId);
 
-            // 第二步: 使用 walletId 和 password 请求 /operator/wallets/{walletId}/addresses 接口生成地址
-            const addressResponse = await axios.post(
-                `http://localhost:3001/operator/wallets/${walletId}/addresses`,
-                {},
-                {
-                    headers: {
-                        password: password,
-                    },
-                }
-            );
+        //     // 第二步: 使用 walletId 和 password 请求 /operator/wallets/{walletId}/addresses 接口生成地址
+        //     const addressResponse = await axios.post(
+        //         `http://localhost:3001/operator/wallets/${walletId}/addresses`,
+        //         {},
+        //         {
+        //             headers: {
+        //                 password: password,
+        //             },
+        //         }
+        //     );
 
-            //   获取返回的 address 并将其设置到 pk（Public Key）字段
-            const address = addressResponse.data.address;
-            setPk(address); // 保存生成的地址到 pk
+        //     //   获取返回的 address 并将其设置到 pk（Public Key）字段
+        //     const address = addressResponse.data.address;
+        //     setPk(address); // 保存生成的地址到 pk
 
-            console.log("地址生成成功，address:", address);
-            //第三步 挖矿
+        //     console.log("地址生成成功，address:", address);
+        //     //第三步 挖矿
 
-              const mineResponse = await axios.post(
-            "http://localhost:3001/miner/mine",
-            {
-                rewardAddress: address, // 使用生成的公钥作为奖励地址
-                feeAddress: address, // 使用生成的公钥作为手续费地址
-            }
-        );
+        //       const mineResponse = await axios.post(
+        //     "http://localhost:3001/miner/mine",
+        //     {
+        //         rewardAddress: address, // 使用生成的公钥作为奖励地址
+        //         feeAddress: address, // 使用生成的公钥作为手续费地址
+        //     }
+        // );
 
-        console.log("挖矿成功，新区块信息:", mineResponse.data);
-        alert("挖矿成功并生成新区块！");
+        // console.log("挖矿成功，新区块信息:", mineResponse.data);
+        // alert("挖矿成功并生成新区块！");
 
-            // 第四步: 调用 /operator/wallets/:walletId/transactions 将地址添加到交易池
-            const transactionResponse = await axios.post(
-                `http://localhost:3001/operator/wallets/${walletId}/transactions`,
-                {
-                    fromAddress: address, // 发送地址为生成的公钥
-                    toAddress: "4d9f711490af4580be23be122c62c0ae3ec2f838b087200bc2e0983c2248bd23", // 假设接收方是一个系统内置地址
-                    amount: 0, // 注册不涉及金额
-                    changeAddress:address,
-                },
-                {
-                    headers: {
-                        password: password,
-                    },
-                }
-            );
+        //     // 第四步: 调用 /operator/wallets/:walletId/transactions 将地址添加到交易池
+            // const transactionResponse = await axios.post(
+            //     `http://localhost:3001/operator/wallets/${walletId}/transactions`,
+            //     {
+            //         fromAddress: address, // 发送地址为生成的公钥
+            //         toAddress: "4d9f711490af4580be23be122c62c0ae3ec2f838b087200bc2e0983c2248bd23", // 假设接收方是一个系统内置地址
+            //         amount: 0, // 注册不涉及金额
+            //         changeAddress:address,
+            //     },
+            //     {
+            //         headers: {
+            //             password: password,
+            //         },
+            //     }
+            // );
 
-           console.log("交易成功，transaction ID:", transactionResponse.data.id);
+        //    console.log("交易成功，transaction ID:", transactionResponse.data.id);
 
-          alert("注册成功并添加交易到区块链池！");
+        //   alert("注册成功并添加交易到区块链池！");
         } catch (error) {
             console.error("注册失败", error);
             alert("注册失败，请检查控制台错误");
@@ -100,10 +100,6 @@ function Registration() {
                         value={password}
                         onChange={(e) => setpassword(e.target.value)}
                     />
-                </div>
-                <div className="input-group">
-                    <label>PK:</label>
-                    <input type="text" value={pk} readOnly />
                 </div>
                 <button className="button" onClick={handleGenerate}>
                     generate
