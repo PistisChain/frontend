@@ -1,83 +1,86 @@
 import React, { useState } from "react";
-import pbkdf2 from "pbkdf2";
-import { eddsa as EdDSA } from "elliptic";
+import axios from "axios";
 
 function Registration() {
   const [studentID, setStudentID] = useState("");
   const [password, setpassword] = useState("");
   const [pk, setPk] = useState("");
-  const [sk, setSk] = useState("");
+  const [walletId, setWalletId] = useState(""); // 存储生成的 walletId
 
-  const ec = new EdDSA("ed25519");
-  const SALT =
-    "0ffaa74d206930aaece253f090c88dbe6685b9e66ec49ad988d84fd7dff230d1";
-
-  function generateSecret(password) {
-    return pbkdf2
-      .pbkdf2Sync(password, SALT, 10000, 64, "sha512")
-      .toString("hex");
-  }
-
-  function generateKeyPairFromSecret(secret) {
-    const keyPair = ec.keyFromSecret(secret);
-    return {
-      publicKey: keyPair.getPublic("hex"),
-      privateKey: keyPair.getSecret("hex"),
-    };
-  }
-
-  const handleGenerate = (e) => {
+  const handleGenerate = async (e) => {
     e.preventDefault();
+
     if (!studentID || !password) {
-      alert("studentID和password不能为空");
+      alert("Student ID 和 password 不能为空");
       return;
     }
+
     try {
-      const secret = generateSecret(password);
-      const keyPair = generateKeyPairFromSecret(secret);
-      setPk(keyPair.publicKey);
-      setSk(keyPair.privateKey);
+      // 第一步: 请求 /operator/wallets 接口创建钱包并获取 walletId
+      const walletResponse = await axios.post(
+        "http://localhost:3001/operator/wallets",
+        { password: password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const walletId = walletResponse.data.id;
+      setWalletId(walletId); // 保存返回的 walletId
+
+      console.log("钱包创建成功,walletId:", walletId);
+
+      // 第二步: 使用 walletId 和 password 请求 /operator/wallets/{walletId}/addresses 接口生成地址
+      const addressResponse = await axios.post(
+        `http://localhost:3001/operator/wallets/${walletId}/addresses`,
+        {},
+        {
+          headers: {
+            password: password,
+          },
+        }
+      );
+
+      // 获取返回的 address 并将其设置到 pk（Public Key）字段
+      const address = addressResponse.data.address;
+      setPk(address); // 保存生成的地址到 pk
+
+      console.log("地址生成成功，address:", address);
     } catch (error) {
       console.error("注册失败", error);
+      alert("注册失败，请检查控制台错误");
     }
-};
-return (
-  <div className="registration">
-    <h2 className="registration-title">Student Registration</h2>
-    <form className="registration-form">
-      <div className="input-group">
-        <label>Student ID:</label>
-        <input
-          type="text"
-          value={studentID}
-          onChange={(e) => setStudentID(e.target.value)}
-        />
-        <label>Password:</label>
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => setpassword(e.target.value)}
-        />
-      </div>
-      <div className="input-group">
-        <label>PK:</label>
-        <input type="text" value={pk} readOnly />
-      </div>
-      <div className="input-group">
-        <label>SK:</label>
-        <input type="text" value={sk} readOnly />
-      </div>
-      <button className="button" onClick={handleGenerate}>
-        generate
-      </button>
-    </form>
-  </div>
-);
-
-
   };
-
-  
-
+  return (
+    <div className="registration">
+      <h2 className="registration-title">Student Registration</h2>
+      <form className="registration-form">
+        <div className="input-group">
+          <label>Student ID:</label>
+          <input
+            type="text"
+            value={studentID}
+            onChange={(e) => setStudentID(e.target.value)}
+          />
+          <label>Password:</label>
+          <input
+            type="text"
+            value={password}
+            onChange={(e) => setpassword(e.target.value)}
+          />
+        </div>
+        <div className="input-group">
+          <label>PK:</label>
+          <input type="text" value={pk} readOnly />
+        </div>
+        <button className="button" onClick={handleGenerate}>
+          generate
+        </button>
+      </form>
+    </div>
+  );
+}
 
 export default Registration;
