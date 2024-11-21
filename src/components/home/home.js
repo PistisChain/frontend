@@ -11,7 +11,7 @@ function Home() {
       <div className="button-container">
         <button className="button" onClick={() => navigate('/registration')}>Registration</button>
         <button className="button" >Attendance</button>
-        <button className="button" >Mint</button>
+        <button className="button" onClick={() => navigate('/TransactionsList')}>TransactionsList</button>
         <button className="button" >Querying</button>
       </div>
     </div>

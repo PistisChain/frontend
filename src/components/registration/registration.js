@@ -16,15 +16,18 @@ function Registration() {
 
         try {
             // 第一步: 请求 /operator/wallets 接口创建钱包并获取 walletId
-            const walletResponse = await axios.post(
+            const response = await axios.post(
                 "http://localhost:2888/register",
                 {
                     studentId: studentID,
                     password: password,
                 }
             );
-            console.log(walletResponse);
-
+            console.log(response.data)
+            sessionStorage.setItem("port", response.data.port)
+            sessionStorage.setItem("publicKey", response.data.wallet.keyPairs[0].publicKey)
+            console.log(response.data.wallet.keyPairs.publicKey, 99999);
+            
         //     const walletId = walletResponse.data.id;
         //     setWalletId(walletId); // 保存返回的 walletId
 
