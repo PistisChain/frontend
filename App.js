@@ -4,7 +4,7 @@ import Home from './components/home/home';
 import Registration from './components/registration/registration';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'antd/dist/reset.css'
-import AttendanceRecord  from './components/querying/querying';
+import AttendanceRecord from './components/querying/querying';
 function App() {
   return (
     <Router>

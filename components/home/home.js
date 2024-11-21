@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './home.css'; // 引入样式文件
-
+import 'antd/dist/reset.css'
 function Home() {
   const navigate = useNavigate();
 

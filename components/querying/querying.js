@@ -1,48 +1,63 @@
-// Copyright 2024 yangsuyi
-// 
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-// 
-//     https://www.apache.org/licenses/LICENSE-2.0
-// 
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-import React, { useState } from 'react';
-import { Input, Button, Table, DatePicker, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Input, Button, Table, DatePicker, Select, message } from 'antd';
+import axios from 'axios';
 import './AttendanceRecord.css';
 
 const { RangePicker } = DatePicker;
 
 const AttendanceRecord = () => {
   const [studentId, setStudentId] = useState('');
-  const [classId, setClassId] = useState('');
+  const [eventId, seteventId] = useState(''); // 用于 class 和 course 查询
   const [dateRange, setDateRange] = useState([]);
   const [attendanceData, setAttendanceData] = useState([]);
-  const [queryMode, setQueryMode] = useState('student'); // student or class
+  const [queryMode, setQueryMode] = useState('student'); // student 或 class
 
+  // 查询数据
   const handleQuery = async () => {
-    const mockStudentData = [
-      { key: '1', date: '2024-01-01', status: 'Present' },
-      { key: '2', date: '2024-01-02', status: 'Absent' },
-    ];
-
-    const mockClassData = [
-      { key: '1', studentId: 'S001', name: 'John', date: '2024-01-01', status: 'Present' },
-      { key: '2', studentId: 'S002', name: 'Jane', date: '2024-01-01', status: 'Absent' },
-    ];
-
-    // 根据查询模式获取不同的数据
-    if (queryMode === 'student') {
-      setAttendanceData(mockStudentData);
-    } else if (queryMode === 'class') {
-      setAttendanceData(mockClassData);
+    try {
+      let response;
+  
+      // 格式化时间范围
+      const [startDate, endDate] = dateRange;
+      const formattedStartDate = startDate ? startDate.format('YYYY-MM-DD') : undefined;
+      const formattedEndDate = endDate ? endDate.format('YYYY-MM-DD') : undefined;
+  
+      // 根据查询模式调用不同的 API
+      if (queryMode === 'student') {
+        response = await axios.get('http://localhost:3001/api/attendance/student', {
+          params: {
+            studentId: studentId || undefined,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          },
+        });
+      } else if (queryMode === 'class') {
+        response = await axios.get('http://localhost:3001/api/attendance/course', {
+          params: {
+            eventId: eventId || undefined,
+            startDate: formattedStartDate,
+            endDate: formattedEndDate,
+          },
+        });
+      }
+  
+      // 处理返回数据
+      const data = response.data.map((item, index) => ({
+        key: index.toString(),
+        ...item,
+      }));
+  
+      setAttendanceData(data);
+    } catch (error) {
+      console.error('Error fetching attendance data:', error);
+      message.error('Failed to fetch attendance data. Please try again.');
     }
   };
+
+  // 页面加载时默认加载全部数据
+  useEffect(() => {
+    handleQuery();
+  }, [queryMode]); // 根据查询模式变化重新加载数据
 
   const studentColumns = [
     { title: 'Date', dataIndex: 'date', key: 'date' },
@@ -63,24 +78,26 @@ const AttendanceRecord = () => {
         <Select
           value={queryMode}
           onChange={setQueryMode}
-          style={{ width: '150px' }}
+          style={{ width: '200px' }}
         >
           <Select.Option value="student">Query by Student</Select.Option>
           <Select.Option value="class">Query by Class</Select.Option>
         </Select>
 
-        {queryMode === 'student' ? (
+        {queryMode === 'student' && (
           <Input
             placeholder="Enter Student ID"
             value={studentId}
             onChange={(e) => setStudentId(e.target.value)}
             style={{ width: '200px' }}
           />
-        ) : (
+        )}
+
+        {queryMode === 'class' && (
           <Input
             placeholder="Enter Class ID"
-            value={classId}
-            onChange={(e) => setClassId(e.target.value)}
+            value={eventId}
+            onChange={(e) => seteventId(e.target.value)}
             style={{ width: '200px' }}
           />
         )}
@@ -104,7 +121,5 @@ const AttendanceRecord = () => {
     </div>
   );
 };
-
-
 
 export default AttendanceRecord;
