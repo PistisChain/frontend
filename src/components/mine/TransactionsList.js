@@ -23,19 +23,26 @@ const TransactionsList = () => {
         }
     };
 
+    const fetchTransactions = async () => {
+        try {
+            // const response = await axios.get('/blockchain/transactions');
+            const response = await axios.get(`http://localhost:${port}/blockchain/transactions`);
+            setTransactions(response.data);
+        } catch (err) {
+            setError('Failed to fetch transactions');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const Reload = () => {
+        fetchTransactions();
+    };
+    const Return = () => {
+        window.location.href = 'http://localhost:3000/'; // 跳转至指定URL
+    };
 
     useEffect(() => {
-        const fetchTransactions = async () => {
-            try {
-                // const response = await axios.get('/blockchain/transactions');
-                const response = await axios.get(`http://localhost:${port}/blockchain/transactions`);
-                setTransactions(response.data);
-            } catch (err) {
-                setError('Failed to fetch transactions');
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchTransactions();
     }, []);
 
@@ -73,11 +80,45 @@ const TransactionsList = () => {
                         fontSize: '16px',
                         borderRadius: '8px',
                         color: 'black',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        backgroundColor:'white',
+                        border: '2px solid black'
                     }}
                 >
                     Mine All
                 </button>
+                <button
+                    onClick={Reload}
+                    style={{
+                        padding: '15px 25px',
+                        fontSize: '16px',
+                        borderRadius: '8px',
+                        color: 'black',
+                        cursor: 'pointer',
+                        marginLeft: '10px',
+                        backgroundColor:'white',
+                        border: '2px solid black'
+                    }}
+                >
+                    Reload
+                </button>
+                <div style={{ marginLeft: 'auto' }}>
+                <button
+                    onClick={Return}
+                    style={{
+                        padding: '15px 25px',
+                        fontSize: '16px',
+                        borderRadius: '8px',
+                        color: 'black',
+                        backgroundColor: 'white',
+                        cursor: 'pointer',
+                        border: '2px solid black',
+                        marginLeft: '10px'
+                    }}
+                >
+                    Return
+                </button>
+                </div>
             </div>
             <table>
                 <thead>
