@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
 import './registration.css';
+import { useNavigate } from "react-router-dom";
 
 function Registration() {
+  const navigate = useNavigate();
     const [studentID, setStudentID] = useState("");
     const [password, setpassword] = useState("");
 
@@ -28,6 +30,7 @@ function Registration() {
             sessionStorage.setItem("studentId", studentID)
             sessionStorage.setItem("password", password)
             alert("注册成功");
+            navigate('/')
         } catch (error) {
             console.error("注册失败", error);
             alert(error.response.data.error);
