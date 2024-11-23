@@ -1,0 +1,102 @@
+/* 全局样式 */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+  }
+  
+  /* 主容器 */
+  .registration {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+  }
+  
+  /* 标题样式 */
+  .registration-title {
+    font-size: 2.5rem;
+    color: #0d47a1;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  /* 表单样式 */
+  .registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* 输入组样式 */
+  .input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* 标签样式 */
+  label {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  /* 输入框样式 */
+  input {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+  }
+  
+  input:focus {
+    border-color: #0d47a1;
+  }
+  
+  /* 按钮样式 */
+  button {
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #0d47a1;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #1565c0;
+  }
+  
+  button:active {
+    background-color: #0d47a1;
+    transform: scale(0.98);
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 480px) {
+    .registration-form {
+        width: 90%;
+    }
+  
+    .registration-title {
+        font-size: 2rem;
+    }
+  }
+
