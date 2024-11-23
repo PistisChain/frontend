@@ -1,0 +1,37 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* 使其占满整个视口高度 */
+    background-color: #f0f4f8; /* 背景色 */
+    font-family: 'Arial', sans-serif; /* 字体 */
+  }
+  
+  .title {
+    font-size: 2.5rem; /* 标题字体大小 */
+    margin-bottom: 30px; /* 标题与按钮的间距 */
+    color: #333; /* 标题颜色 */
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 按钮间距 */
+  }
+  
+  .button {
+    padding: 15px 25px; /* 按钮内边距 */
+    font-size: 1.2rem; /* 按钮字体大小 */
+    color: #fff; /* 字体颜色 */
+    background-color: #007bff; /* 按钮背景色 */
+    border: none; /* 去掉边框 */
+    border-radius: 5px; /* 圆角边框 */
+    cursor: pointer; /* 鼠标样式 */
+    transition: background-color 0.3s ease; /* 背景色渐变 */
+  }
+  
+  .button:hover {
+    background-color: #0056b3; /* 悬停时的背景色 */
+  }
+
