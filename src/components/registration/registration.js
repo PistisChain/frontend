@@ -12,7 +12,7 @@ function Registration() {
         e.preventDefault();
 
         if (!studentID || !password) {
-            alert("Student ID 和 password 不能为空");
+            alert("Student ID and password cannot be empty");
             return;
         }
 
@@ -31,7 +31,7 @@ function Registration() {
             console.log(response.data.wallet.keyPairs.publicKey, 99999);
             
 
-            alert("注册成功！");
+            alert("Registration is successful!");
 
             // 注册成功后跳转到主页面
             navigate("/"); // 跳转到主页面
@@ -91,8 +91,8 @@ function Registration() {
 
         //   alert("注册成功并添加交易到区块链池！");
         } catch (error) {
-            console.error("注册失败", error);
-            alert("注册失败，请检查控制台错误");
+            console.error("registration failure", error);
+            alert("registration failure");
         }
     };
     return (
