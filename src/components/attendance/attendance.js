@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import "./attendance.css";
+import { message } from "antd";
+import { Layout } from "antd";
+import Status from '../status/status';
 import axios from "axios";
-const port = sessionStorage.getItem('port')
 
 function Attendance() {
+  const port = sessionStorage.getItem('port')
   const [evnetID, setEventID] = useState("");
   
 
@@ -20,14 +23,18 @@ function Attendance() {
               eventId: evnetID,
           }
       );
-      alert("签到成功，正在等待挖矿确认");
+      message.success("签到成功，正在等待挖矿确认");
+      // alert("签到成功，正在等待挖矿确认");
   } catch (error) {
       console.error("签到失败", error);
-      alert("error.response.data.error");
+      message.error(error.response?.data?.error)
+      // alert("error.response.data.error");
   }
   };
   return (
-    <div className="registration">
+    <Layout>
+      <Status />
+      <div className="registration">
       <h2 className="registration-title">Student Attendance</h2>
       <form className="registration-form">
         <label>event ID:</label>
@@ -41,6 +48,9 @@ function Attendance() {
         </button>
       </form>
     </div>
+    </Layout>
+
+    
   );
 }
 

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
 import "./TransactionsList.css"
-const port = sessionStorage.getItem('port')
 
 const TransactionsList = () => {
+    const port = sessionStorage.getItem('port')
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

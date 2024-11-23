@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import './registration.css';
 import { useNavigate } from "react-router-dom";
+import { message } from "antd";
 
 function Registration() {
   const navigate = useNavigate();
@@ -12,7 +13,8 @@ function Registration() {
         e.preventDefault();
 
         if (!studentID || !password) {
-            alert("Student ID 和 password 不能为空");
+            message.info("Student ID 和 password 不能为空")
+            // alert("Student ID 和 password 不能为空");
             return;
         }
 
@@ -29,11 +31,13 @@ function Registration() {
             sessionStorage.setItem("address", response.data.address)
             sessionStorage.setItem("studentId", studentID)
             sessionStorage.setItem("password", password)
-            alert("注册成功");
-            navigate('/')
+            // alert("注册成功");
+            message.success("注册成功")
+            navigate('/operation')
         } catch (error) {
             console.error("注册失败", error);
-            alert(error.response.data.error);
+            message.error(error.response?.data?.error)
+            // alert(error.response.data.error);
         }
     };
     return (

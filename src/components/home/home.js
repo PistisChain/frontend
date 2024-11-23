@@ -7,13 +7,10 @@ function Home() {
 
   return (
     <div className="home">
-      <h1 className="title">Welcome to the App</h1>
+      <h1 className="title">Who are you?</h1>
       <div className="button-container">
         <button className="button" onClick={() => navigate('/registration')}>Registration</button>
         <button className="button" onClick={() => navigate('/login')}>Login</button>
-        <button className="button" onClick={() => navigate('/attendance')}>Attendance</button>
-        <button className="button" onClick={() => navigate('/TransactionsList')}>TransactionsList</button>
-        <button className="button" >Querying</button>
       </div>
     </div>
   );

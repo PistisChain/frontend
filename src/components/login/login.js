@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { message } from "antd";
 import './login.css';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
     const [studentID, setStudentID] = useState("");
     const [password, setpassword] = useState("");
 
@@ -10,7 +13,8 @@ function Login() {
         e.preventDefault();
 
         if (!studentID || !password) {
-            alert("Student ID 和 password 不能为空");
+            message.info("Student ID 和 password 不能为空")
+            // alert("Student ID 和 password 不能为空");
             return;
         }
 
@@ -27,10 +31,13 @@ function Login() {
             sessionStorage.setItem("address", response.data.address)
             sessionStorage.setItem("studentId", studentID)
             sessionStorage.setItem("password", password)
-            alert("登录成功");
+            // alert("登录成功");
+            message.success('登录成功')
+            navigate('/operation')
         } catch (error) {
             console.error("登录失败", error);
-            alert(error?.response?.data.error);
+            message.error(error?.response?.data.error)
+            // alert(error?.response?.data.error);
         }
     };
     return (
