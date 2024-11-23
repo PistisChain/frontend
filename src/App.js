@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 import Home from './components/home/home';
 import Registration from './components/registration/registration';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -9,8 +10,8 @@ function App() {
     <Router>
     <div className="App">
       <Routes>
-          <Route path="/" element={<Home />} />  {/* 设置默认路由为 Home */}
-          <Route path="/registration" element={<Registration />} />
+          <Route path="/" element={<Registration />} />  {/* 设置默认路由为 Registration */}
+          <Route path="/home" element={<Home />} />    {/* 主页面改为 /home */}
           {/* 其他路由配置可以在这里添加 */}
         </Routes>
     </div>
