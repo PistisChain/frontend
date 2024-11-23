@@ -10,6 +10,7 @@ function Home() {
       <h1 className="title">Welcome to the App</h1>
       <div className="button-container">
         <button className="button" onClick={() => navigate('/registration')}>Registration</button>
+        <button className="button" onClick={() => navigate('/login')}>Login</button>
         <button className="button" >Attendance</button>
         <button className="button" onClick={() => navigate('/TransactionsList')}>TransactionsList</button>
         <button className="button" >Querying</button>
