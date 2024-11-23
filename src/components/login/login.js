@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import './login.css';
 
-function Registration() {
+function Login() {
     const [studentID, setStudentID] = useState("");
     const [password, setpassword] = useState("");
 
@@ -23,7 +23,10 @@ function Registration() {
                 }
             );
             sessionStorage.setItem("port", response.data.port)
-            sessionStorage.setItem("publicKey", response.data.wallet.keyPairs[0].publicKey)
+            sessionStorage.setItem("walletId", response.data.wallet.id)
+            sessionStorage.setItem("address", response.data.address)
+            sessionStorage.setItem("studentId", studentID)
+            sessionStorage.setItem("password", password)
             alert("登录成功");
         } catch (error) {
             console.error("登录失败", error);
@@ -56,4 +59,4 @@ function Registration() {
     );
 }
 
-export default Registration;
+export default Login;

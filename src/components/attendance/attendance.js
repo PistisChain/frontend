@@ -1,34 +1,35 @@
 import React, { useState } from "react";
 import "./attendance.css";
 import axios from "axios";
+const port = sessionStorage.getItem('port')
 
 function Attendance() {
-  const [studentID, setStudentID] = useState("");
-  const [password, setpassword] = useState("");
   const [evnetID, setEventID] = useState("");
   
 
   const handleTakeAttendance = async (e) => {
-    
+    e.preventDefault();
+    try {
+        await axios.post(
+          `http://localhost:${port}/operator/attendance`,
+          {
+              studentId: sessionStorage.getItem('studentId'),
+              password: sessionStorage.getItem('password'),
+              walletId: sessionStorage.getItem('walletId'),
+              address: sessionStorage.getItem('address'),
+              eventId: evnetID,
+          }
+      );
+      alert("签到成功，正在等待挖矿确认");
+  } catch (error) {
+      console.error("签到失败", error);
+      alert("error.response.data.error");
+  }
   };
   return (
     <div className="registration">
-      <h2 className="registration-title">Student Registration</h2>
+      <h2 className="registration-title">Student Attendance</h2>
       <form className="registration-form">
-        <div className="input-group">
-          <label>Student ID:</label>
-          <input
-            type="text"
-            value={studentID}
-            onChange={(e) => setStudentID(e.target.value)}
-          />
-          <label>Password:</label>
-          <input
-            type="text"
-            value={password}
-            onChange={(e) => setpassword(e.target.value)}
-          />
-        </div>
         <label>event ID:</label>
           <input
             type="text"

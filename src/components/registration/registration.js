@@ -23,7 +23,10 @@ function Registration() {
                 }
             );
             sessionStorage.setItem("port", response.data.port)
-            sessionStorage.setItem("publicKey", response.data.wallet.keyPairs[0].publicKey)
+            sessionStorage.setItem("walletId", response.data.wallet.id)
+            sessionStorage.setItem("address", response.data.address)
+            sessionStorage.setItem("studentId", studentID)
+            sessionStorage.setItem("password", password)
             alert("注册成功");
         } catch (error) {
             console.error("注册失败", error);
