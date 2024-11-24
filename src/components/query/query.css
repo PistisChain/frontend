@@ -1,0 +1,36 @@
+.attendance-record-container {
+  height: 100vh; /* 占满整个视窗高度 */
+  margin: 0; /* 移除顶部和底部空隙 */
+  padding: 20px;
+  background-color: #f9f9f9;
+  display: flex; /* 启用 Flexbox */
+  flex-direction: column; /* 让子元素垂直排列 */
+  align-items: center; /* 水平居中 */
+  justify-content: center; /* 垂直居中 */
+  
+} 
+
+.attendance-record-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.attendance-record-container .ant-input {
+  font-size: 16px;
+}
+
+.attendance-record-container .ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.attendance-record-container .ant-btn-primary:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.attendance-record-container .ant-table {
+  margin-top: 20px;
+  width: 100%; /* 表格宽度占满页面 */
+}

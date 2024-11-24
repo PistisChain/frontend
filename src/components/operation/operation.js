@@ -14,7 +14,7 @@ function Home() {
         <div className="button-container">
           <button className="button" onClick={() => navigate('/attendance')}>Attendance</button>
           <button className="button" onClick={() => navigate('/TransactionsList')}>TransactionsList</button>
-          <button className="button" >Querying</button>
+          <button className="button" onClick={() => navigate('/query')} >Querying</button>
         </div>
       </div>
     </Layout>

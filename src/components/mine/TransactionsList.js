@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Toaster, toast } from 'react-hot-toast';
 import "./TransactionsList.css"
+import Status from '../status/status';
+import { Layout } from "antd";
+
 
 const TransactionsList = () => {
     const port = sessionStorage.getItem('port')
@@ -13,7 +16,7 @@ const TransactionsList = () => {
 
     const handleMine = async () => {
         try {
-            const response = await axios.post(`http://localhost:${port}/miner/mine`, {rewardAddress: sessionStorage.getItem("publicKey"), feeAddress: sessionStorage.getItem("publicKey") });
+            const response = await axios.post(`http://localhost:${port}/miner/mine`, { rewardAddress: sessionStorage.getItem("publicKey"), feeAddress: sessionStorage.getItem("publicKey") });
             console.log('Mining successful:', response.data);
             toast.success("Mining success")
             window.location.reload()
@@ -55,90 +58,94 @@ const TransactionsList = () => {
     }
 
     return (
-        <div>
-            <Toaster position="top-center"/>
-            <h1>Transactions Pools</h1>
-            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                <input
-                    type="text"
-                    placeholder="Reward Address"
-                    value={rewardAddress}
-                    onChange={(e) => setRewardAddress(e.target.value)}
-                    style={{ marginRight: '10px', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-                />
-                <input
-                    type="text"
-                    placeholder="Fee Address"
-                    value={feeAddress}
-                    onChange={(e) => setFeeAddress(e.target.value)}
-                    style={{ marginRight: '10px', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-                />
-                <button
-                    onClick={handleMine}
-                    style={{
-                        padding: '15px 25px',
-                        fontSize: '16px',
-                        borderRadius: '8px',
-                        color: 'black',
-                        cursor: 'pointer',
-                        backgroundColor:'white',
-                        border: '2px solid black'
-                    }}
-                >
-                    Mine All
-                </button>
-                <button
-                    onClick={Reload}
-                    style={{
-                        padding: '15px 25px',
-                        fontSize: '16px',
-                        borderRadius: '8px',
-                        color: 'black',
-                        cursor: 'pointer',
-                        marginLeft: '10px',
-                        backgroundColor:'white',
-                        border: '2px solid black'
-                    }}
-                >
-                    Reload
-                </button>
-                <div style={{ marginLeft: 'auto' }}>
-                <button
-                    onClick={Return}
-                    style={{
-                        padding: '15px 25px',
-                        fontSize: '16px',
-                        borderRadius: '8px',
-                        color: 'black',
-                        backgroundColor: 'white',
-                        cursor: 'pointer',
-                        border: '2px solid black',
-                        marginLeft: '10px'
-                    }}
-                >
-                    Return
-                </button>
+        <Layout>
+            <Status />
+            <div>
+                <Toaster position="top-center" />
+                <h1>Transactions Pools</h1>
+                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <input
+                        type="text"
+                        placeholder="Reward Address"
+                        value={rewardAddress}
+                        onChange={(e) => setRewardAddress(e.target.value)}
+                        style={{ marginRight: '10px', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    />
+                    <input
+                        type="text"
+                        placeholder="Fee Address"
+                        value={feeAddress}
+                        onChange={(e) => setFeeAddress(e.target.value)}
+                        style={{ marginRight: '10px', padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
+                    />
+                    <button
+                        onClick={handleMine}
+                        style={{
+                            padding: '15px 25px',
+                            fontSize: '16px',
+                            borderRadius: '8px',
+                            color: 'black',
+                            cursor: 'pointer',
+                            backgroundColor: 'white',
+                            border: '2px solid black'
+                        }}
+                    >
+                        Mine All
+                    </button>
+                    <button
+                        onClick={Reload}
+                        style={{
+                            padding: '15px 25px',
+                            fontSize: '16px',
+                            borderRadius: '8px',
+                            color: 'black',
+                            cursor: 'pointer',
+                            marginLeft: '10px',
+                            backgroundColor: 'white',
+                            border: '2px solid black'
+                        }}
+                    >
+                        Reload
+                    </button>
+                    <div style={{ marginLeft: 'auto' }}>
+                        <button
+                            onClick={Return}
+                            style={{
+                                padding: '15px 25px',
+                                fontSize: '16px',
+                                borderRadius: '8px',
+                                color: 'black',
+                                backgroundColor: 'white',
+                                cursor: 'pointer',
+                                border: '2px solid black',
+                                marginLeft: '10px'
+                            }}
+                        >
+                            Return
+                        </button>
+                    </div>
                 </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Hash</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {transactions.map((transaction) => (
+                            <tr key={transaction.id}>
+                                <td>{transaction.id}</td>
+                                <td>{transaction.hash}</td>
+                                <td>{transaction.type}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
-            <table>
-                <thead>
-                <tr>
-                    <th>Transaction ID</th>
-                    <th>Hash</th>
-                    <th>Type</th>
-                </tr>
-                </thead>
-                <tbody>
-                {transactions.map((transaction) => (
-                    <tr key={transaction.id}>
-                        <td>{transaction.id}</td>
-                        <td>{transaction.hash}</td>
-                        <td>{transaction.type}</td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
-        </div>
+        </Layout>
+
     );
 
 
