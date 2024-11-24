@@ -9,6 +9,7 @@ import Status from '../status/status';
 const { RangePicker } = DatePicker;
 
 const AttendanceRecord = () => {
+  const port = sessionStorage.getItem('port')
   const [studentId, setStudentId] = useState('');
   const [eventId, setEventId] = useState('');
   const [attendanceData, setAttendanceData] = useState([]);
@@ -45,10 +46,10 @@ const AttendanceRecord = () => {
 
       if (queryMode === 'student') {
         params = { ...params, studentId };
-        response = await axios.get('http://localhost:2888/query/student', { params });
+        response = await axios.get(`http://localhost:${port}/query/student`, { params });
       } else if (queryMode === 'class') {
         params = { ...params, eventId };
-        response = await axios.get('http://localhost:2888/query/course', { params });
+        response = await axios.get(`http://localhost:${port}/query/course`, { params });
       }
 
       const data = response.data.map((item, index) => ({
